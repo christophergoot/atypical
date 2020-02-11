@@ -1,7 +1,7 @@
-import * as c from "./firstActions";
+import A, { FirstActionTypes, Item } from "./firstActionTypes";
 
 type DefaultState = {
-  items: c.Item[];
+  items: Item[];
   loading: boolean;
 };
 
@@ -12,10 +12,10 @@ const defaultState: DefaultState = {
 
 const firstReducer = (
   state: DefaultState = defaultState,
-  action: c.FirstActionTypes
+  action: FirstActionTypes
 ) => {
   switch (action.type) {
-    case c.CREATE_ITEM: {
+    case A.CREATE_ITEM: {
       return {
         ...state,
         items: [
@@ -25,36 +25,36 @@ const firstReducer = (
       };
     }
 
-    case c.DELETE_ITEM: {
+    case A.DELETE_ITEM: {
       return {
         ...state,
         items: state.items.filter(item => item.id !== action.meta.id)
       };
     }
 
-    case c.NEW_CAT_FACT_ITEM_PENDING:
-    case c.NEW_CAT_FACT_ITEM_REJECTED:
-    case c.SAVE_ITEM_WITH_PROMISE_PENDING:
-    case c.SAVE_ITEM_WITH_PROMISE_REJECTED: {
+    case A.NEW_CAT_FACT_ITEM_PENDING:
+    case A.NEW_CAT_FACT_ITEM_REJECTED:
+    case A.SAVE_ITEM_WITH_PROMISE_PENDING:
+    case A.SAVE_ITEM_WITH_PROMISE_REJECTED: {
       return {
         ...state,
         loading: false
       };
     }
 
-    case c.SAVE_ITEM_WITH_PROMISE_FULFILLED: {
+    case A.SAVE_ITEM_WITH_PROMISE_FULFILLED: {
       return {
         ...state,
         loading: false
       };
     }
 
-    case c.NEW_CAT_FACT_ITEM_FULFILLED: {
+    case A.NEW_CAT_FACT_ITEM_FULFILLED: {
       return {
         state,
         items: [
           ...state.items,
-          { id: state.items.length + 1, description: action.axiosPayload.fact }
+          { id: state.items.length + 1, description: action.payload.fact }
         ]
       };
     }
