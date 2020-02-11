@@ -1,22 +1,26 @@
 import axios, { AxiosPromise } from "axios";
-import A, {
-  CreateItemAction,
-  DeleteItemAction,
-  SaveItemsAction,
-  NewCatFactItem
-} from "./firstActionTypes";
-import { ThunkAction } from "redux-thunk";
-import { AnyAction } from "redux";
+import A from "./firstActionTypes";
 
-// actions
+interface CreateItemAction {
+  type: typeof A.CREATE_ITEM;
+  payload: string;
+}
 export function createItem(description: string): CreateItemAction {
   return { type: A.CREATE_ITEM, payload: description };
 }
 
+interface DeleteItemAction {
+  type: typeof A.DELETE_ITEM;
+  meta: { id: number };
+}
 export function deleteItem(id: number): DeleteItemAction {
   return { type: A.DELETE_ITEM, meta: { id } };
 }
 
+interface SaveItemsAction {
+  type: typeof A.SAVE_ITEM_WITH_PROMISE;
+  payload: Promise<unknown>;
+}
 export function saveItems(): SaveItemsAction {
   const promisePayload = new Promise((resolve, reject) => {
     setTimeout(() => resolve("success"), 500);
@@ -28,6 +32,10 @@ export function saveItems(): SaveItemsAction {
   };
 }
 
+interface NewCatFactItem {
+  type: typeof A.NEW_CAT_FACT_ITEM;
+  payload: AxiosPromise<{ fact: string }>;
+}
 export function newCatFactItem(): NewCatFactItem {
   return {
     type: A.NEW_CAT_FACT_ITEM,

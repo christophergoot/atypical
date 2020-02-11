@@ -1,10 +1,5 @@
-import A, { Item } from "./firstActionTypes";
+import A, { DefaultState } from "./firstActionTypes";
 import { AnyAction } from "redux";
-
-type DefaultState = {
-  items: Item[];
-  loading: boolean;
-};
 
 const defaultState: DefaultState = {
   items: [],
