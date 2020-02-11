@@ -19,33 +19,35 @@ export type Item = {
 };
 
 type T = Object;
-interface CreateItemAction {
+export interface CreateItemAction {
   type: typeof t.CREATE_ITEM;
   payload: string;
 }
-interface DeleteItemAction {
+export interface DeleteItemAction {
   type: typeof t.DELETE_ITEM;
   meta: { id: number };
 }
-interface SaveItemsAction {
+export interface SaveItemsAction {
   type: typeof t.SAVE_ITEM_WITH_PROMISE;
   payload: Promise<unknown>;
 }
-interface NewCatFactItem {
+export interface NewCatFactItem {
   type: typeof t.NEW_CAT_FACT_ITEM;
   payload: Promise<T>;
 }
 
-interface NewCatFactItemFulfilled {
+export interface NewCatFactItemFulfilled {
   type: typeof t.NEW_CAT_FACT_ITEM_FULFILLED;
   payload: Promise<{ fact: string }>;
 }
 
-export type FirstActionTypes =
-  | CreateItemAction
-  | DeleteItemAction
-  | SaveItemsAction
-  | NewCatFactItem
-  | NewCatFactItemFulfilled;
+// // export type FirstActionTypes =
+// //   | CreateItemAction
+// //   | DeleteItemAction
+// //   | SaveItemsAction
+// //   | NewCatFactItem
+// //   | NewCatFactItemFulfilled;
+
+// export type FirstActionTypes = AnyAction;
 
 export default t;
