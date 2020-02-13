@@ -1,44 +1,43 @@
 import axios, { AxiosPromise } from "axios";
-import A from "./firstActionTypes";
 
-interface CreateItemAction {
-  type: typeof A.CREATE_ITEM;
-  payload: string;
-}
-export function createItem(description: string): CreateItemAction {
-  return { type: A.CREATE_ITEM, payload: description };
-}
+import * as A from "./firstActionTypes";
+import { CatFact } from "./types";
 
-interface DeleteItemAction {
-  type: typeof A.DELETE_ITEM;
-  meta: { id: number };
+interface DeleteCatFactAction {
+  type: typeof A.DELETE_CAT_FACT;
+  meta: { fact: string };
 }
-export function deleteItem(id: number): DeleteItemAction {
-  return { type: A.DELETE_ITEM, meta: { id } };
+export function deleteItem(fact: string): DeleteCatFactAction {
+  return { type: A.DELETE_CAT_FACT, meta: { fact } };
 }
 
-interface SaveItemsAction {
-  type: typeof A.SAVE_ITEM_WITH_PROMISE;
-  payload: Promise<unknown>;
+interface NewCatFact {
+  type: typeof A.NEW_CAT_FACT;
+  payload: AxiosPromise<CatFact>;
 }
-export function saveItems(): SaveItemsAction {
-  const promisePayload = new Promise((resolve, reject) => {
-    setTimeout(() => resolve("success"), 500);
-  });
-
+export function newCatFact(): NewCatFact {
   return {
-    type: A.SAVE_ITEM_WITH_PROMISE,
-    payload: promisePayload
-  };
-}
-
-interface NewCatFactItem {
-  type: typeof A.NEW_CAT_FACT_ITEM;
-  payload: AxiosPromise<{ fact: string }>;
-}
-export function newCatFactItem(): NewCatFactItem {
-  return {
-    type: A.NEW_CAT_FACT_ITEM,
+    type: A.NEW_CAT_FACT,
     payload: axios.get("https://catfact.ninja/fact?max_length=140")
   };
 }
+
+interface NewCatFactPending {
+  type: typeof A.NEW_CAT_FACT_PENDING;
+}
+interface NewCatFactFulfilled {
+  type: typeof A.NEW_CAT_FACT_FULFILLED;
+  payload: CatFact;
+}
+interface NewCatFactRejected {
+  type: typeof A.NEW_CAT_FACT_REJECTED;
+  meta: { errorMessage: "couldn't get a cat fact" };
+}
+
+type AllNewCatFactActions =
+  | NewCatFact
+  | NewCatFactPending
+  | NewCatFactFulfilled
+  | NewCatFactRejected;
+
+export type AppActionTypes = DeleteCatFactAction | AllNewCatFactActions;

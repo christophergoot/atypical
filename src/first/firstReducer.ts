@@ -1,57 +1,46 @@
-import A, { DefaultState } from "./firstActionTypes";
-import { AnyAction } from "redux";
+import * as A from "./firstActionTypes";
+import { AppActionTypes } from "./firstActions";
+import { DefaultState } from "./types";
 
 const defaultState: DefaultState = {
-  items: [],
-  loading: false
+  catFacts: [],
+  loading: false,
+  error: ""
 };
 
 const firstReducer = (
   state: DefaultState = defaultState,
-  action: AnyAction
+  action: AppActionTypes
 ) => {
   switch (action.type) {
-    case A.CREATE_ITEM: {
+    case A.DELETE_CAT_FACT: {
       return {
         ...state,
-        items: [
-          ...state.items,
-          { id: state.items.length + 1, description: action.payload }
-        ]
+        items: state.catFacts.filter(
+          catFact => catFact.fact !== action.meta.fact
+        )
       };
     }
 
-    case A.DELETE_ITEM: {
+    case A.NEW_CAT_FACT_PENDING: {
       return {
         ...state,
-        items: state.items.filter(item => item.id !== action.meta.id)
+        loading: true
       };
     }
 
-    case A.NEW_CAT_FACT_ITEM_PENDING:
-    case A.NEW_CAT_FACT_ITEM_REJECTED:
-    case A.SAVE_ITEM_WITH_PROMISE_PENDING:
-    case A.SAVE_ITEM_WITH_PROMISE_REJECTED: {
+    case A.NEW_CAT_FACT_REJECTED: {
       return {
         ...state,
-        loading: false
+        loading: false,
+        error: action.meta.errorMessage
       };
     }
 
-    case A.SAVE_ITEM_WITH_PROMISE_FULFILLED: {
+    case A.NEW_CAT_FACT_FULFILLED: {
       return {
         ...state,
-        loading: false
-      };
-    }
-
-    case A.NEW_CAT_FACT_ITEM_FULFILLED: {
-      return {
-        state,
-        items: [
-          ...state.items,
-          { id: state.items.length + 1, description: action.payload.fact }
-        ]
+        selectedCatFact: action.payload
       };
     }
   }
