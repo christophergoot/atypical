@@ -1,5 +1,10 @@
-import axios, { AxiosPromise } from "axios";
+import axios, { AxiosPromise, AxiosResponse } from "axios";
 import A from "./firstActionTypes";
+
+export type FirstActionTypes = CreateItemAction &
+  DeleteItemAction &
+  SaveItemsAction &
+  NewCatFactItem;
 
 interface CreateItemAction {
   type: typeof A.CREATE_ITEM;
@@ -34,7 +39,11 @@ export function saveItems(): SaveItemsAction {
 
 interface NewCatFactItem {
   type: typeof A.NEW_CAT_FACT_ITEM;
-  payload: AxiosPromise<{ fact: string }>;
+  payload: Promise<AxiosResponse<any>>;
+}
+interface NewCatFactItem {
+  type: typeof A.NEW_CAT_FACT_ITEM_FULFILLED;
+  payload: Promise<AxiosResponse<any>>;
 }
 export function newCatFactItem(): NewCatFactItem {
   return {

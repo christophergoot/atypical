@@ -1,5 +1,6 @@
 import A, { DefaultState } from "./firstActionTypes";
 import { AnyAction } from "redux";
+import { FirstActionTypes } from "./firstActions";
 
 const defaultState: DefaultState = {
   items: [],
@@ -8,7 +9,7 @@ const defaultState: DefaultState = {
 
 const firstReducer = (
   state: DefaultState = defaultState,
-  action: AnyAction
+  action: FirstActionTypes
 ) => {
   switch (action.type) {
     case A.CREATE_ITEM: {
